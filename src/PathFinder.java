@@ -44,7 +44,8 @@ public class PathFinder {
                     int checkY = newY + dir[1];
 
                     // Break if next move is out of bounds or hits a rock
-                    if (checkX < 0 || checkX >= gameMap.getHeight() || checkY < 0 || checkY >= gameMap.getWidth() || gameMap.getMap().get(checkX)[checkY] == '0') {
+                    if (checkX < 0 || checkX >= gameMap.getHeight() || checkY < 0 || checkY >= gameMap.getWidth() || checkY >= gameMap.getMap().get(checkX).length || gameMap.getMap().get(checkX)[checkY] == '0') {
+
                         break;
                     }
                     newX = checkX;
