@@ -32,7 +32,12 @@ public class PathFinder {
             PathNode current = queue.poll();
 
             if (current.x == gameMap.getFinishX() && current.y == gameMap.getFinishY()) {
-                return current.path + "\nDone!";
+                String[] pathSteps = current.path.split("\n");
+                StringBuilder numberedPath = new StringBuilder(pathSteps[0]);
+                for(int i = 1; i < pathSteps.length; i++){
+                    numberedPath.append("\n").append(i).append(".").append(pathSteps[i]);
+                }
+                return numberedPath.toString() + "\nDone!";
             }
 
             for (int i = 0; i < directions.length; i++) {
