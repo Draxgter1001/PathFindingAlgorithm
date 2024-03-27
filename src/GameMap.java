@@ -7,7 +7,7 @@ import java.util.List;
 
 public class GameMap {
 
-    private List<char[]> map = new ArrayList<>();
+    private final List<char[]> map = new ArrayList<>();
     private int startX = -1, startY = -1; //Starting Position in the Map
     private int finishX = -1, finishY = -1; //Finish Position in the Map
 

@@ -26,49 +26,48 @@ public class PathFinder {
         boolean[][] visited = new boolean[gameMap.getHeight()][gameMap.getWidth()];
         Queue<PathNode> queue = new LinkedList<>();
 
-        queue.add(new PathNode(gameMap.getStartX(), gameMap.getStartY(), 0, "Start at (" + gameMap.getStartX() + "," + gameMap.getStartY() + ")"));
+        StringBuilder pathBuilder = new StringBuilder();
+        int moveCount = 1;
+        pathBuilder.append(moveCount++).append(". Start at (").append(gameMap.getStartY() + 1).append(",").append(gameMap.getStartX() + 1).append(")");
+
+        queue.add(new PathNode(gameMap.getStartX(), gameMap.getStartY(), 0, "Start at (" + (gameMap.getStartY() + 1) + "," + (gameMap.getStartX() + 1) + ")"));
+        visited[gameMap.getStartX()][gameMap.getStartY()] = true;
+
+        boolean pathFound = false;
 
         while (!queue.isEmpty()) {
             PathNode current = queue.poll();
 
             if (current.x == gameMap.getFinishX() && current.y == gameMap.getFinishY()) {
+                pathFound = true;
                 String[] pathSteps = current.path.split("\n");
-                StringBuilder numberedPath = new StringBuilder(pathSteps[0]);
-                for(int i = 1; i < pathSteps.length; i++){
-                    numberedPath.append("\n").append(i).append(".").append(pathSteps[i]);
+                for (int i = 1; i < pathSteps.length; i++) {
+                    pathBuilder.append("\n").append(moveCount++).append(". ").append(pathSteps[i]);
                 }
-                return numberedPath.toString() + "\nDone!";
+                pathBuilder.append("\n").append(moveCount++).append(". Done!");
+                break;
             }
 
             for (int i = 0; i < directions.length; i++) {
                 int[] dir = directions[i];
-                int newX = current.x, newY = current.y;
+                int newX = current.x + dir[0];
+                int newY = current.y + dir[1];
 
-                while (true) {
-                    int checkX = newX + dir[0];
-                    int checkY = newY + dir[1];
-
-                    // Break if next move is out of bounds or hits a rock
-                    if (checkX < 0 || checkX >= gameMap.getHeight() || checkY < 0 || checkY >= gameMap.getWidth() || checkY >= gameMap.getMap().get(checkX).length || gameMap.getMap().get(checkX)[checkY] == '0') {
-
-                        break;
-                    }
-                    newX = checkX;
-                    newY = checkY;
-
-                    // Break if reaching the finish
-                    if (gameMap.getMap().get(newX)[newY] == 'F') break;
-                }
-
-                // Prevent re-visiting the same spot
-                if (!visited[newX][newY]) {
+                if (isValidMove(newX, newY, visited)) {
                     visited[newX][newY] = true;
-                    String newPath = current.path + "\nMove " + directionNames[i] + " to (" + (newX + 1) + "," + (newY + 1) + ")";
+                    String newPath = current.path + "\nMove " + directionNames[i] + " to (" + (newY + 1) + "," + (newX + 1) + ")";
                     queue.add(new PathNode(newX, newY, current.steps + 1, newPath));
                 }
             }
         }
 
-        return "No path found.";
+        return pathFound ? pathBuilder.toString() : "No path found.";
+    }
+
+    private boolean isValidMove(int x, int y, boolean[][] visited) {
+        if (x < 0 || x >= gameMap.getHeight() || y < 0 || y >= gameMap.getWidth() || y >= gameMap.getMap().get(x).length || gameMap.getMap().get(x)[y] == '0' || visited[x][y]) {
+            return false;
+        }
+        return true;
     }
 }
