@@ -17,4 +17,16 @@ public class CustomException {
             super(message);
         }
     }
+
+    static class MultipleStartPointsException extends Exception {
+        public MultipleStartPointsException(String message) {
+            super(message);
+        }
+    }
+
+    static class MultipleFinishPointsException extends Exception {
+        public MultipleFinishPointsException(String message) {
+            super(message);
+        }
+    }
 }

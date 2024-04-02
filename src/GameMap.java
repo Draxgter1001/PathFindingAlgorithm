@@ -11,30 +11,36 @@ public class GameMap {
     private int startX = -1, startY = -1; //Starting Position in the Map
     private int finishX = -1, finishY = -1; //Finish Position in the Map
 
-    public GameMap(String filePath) throws IOException, CustomException.MapLoadingException, CustomException.MissingStartPointException, CustomException.MissingFinishPointException {
+    public GameMap(String filePath) throws IOException, CustomException.MapLoadingException, CustomException.MissingStartPointException, CustomException.MissingFinishPointException, CustomException.MultipleStartPointsException, CustomException.MultipleFinishPointsException {
         loadMap(filePath);
-        if(startX == -1 || startY == -1) throw new CustomException.MissingStartPointException("Map does not contain a starting point 'S'");
-        if(finishX == -1 || finishY == -1) throw new CustomException.MissingFinishPointException("Map does not contain a finish point 'F'");
+        if (startX == -1 || startY == -1) throw new CustomException.MissingStartPointException("Map does not contain a starting point 'S'");
+        if (finishX == -1 || finishY == -1) throw new CustomException.MissingFinishPointException("Map does not contain a finish point 'F'");
     }
 
-    private void loadMap(String filePath) throws IOException, CustomException.MapLoadingException {
-        try(BufferedReader reader = new BufferedReader(new FileReader(filePath))){
+    private void loadMap(String filePath) throws IOException, CustomException.MapLoadingException, CustomException.MultipleStartPointsException, CustomException.MultipleFinishPointsException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            while((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 char[] row = line.toCharArray();
                 map.add(row);
                 int rowIndex = map.size() - 1;
-                for(int i = 0; i < row.length; i++){
-                    if(row[i] == 'S'){
+                for (int i = 0; i < row.length; i++) {
+                    if (row[i] == 'S') {
+                        if (startX != -1 || startY != -1) {
+                            throw new CustomException.MultipleStartPointsException("Map contains multiple starting points 'S'");
+                        }
                         startX = rowIndex;
                         startY = i;
                     } else if (row[i] == 'F') {
+                        if (finishX != -1 || finishY != -1) {
+                            throw new CustomException.MultipleFinishPointsException("Map contains multiple finish points 'F'");
+                        }
                         finishX = rowIndex;
                         finishY = i;
                     }
                 }
             }
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             throw new CustomException.MapLoadingException("Map file not found: " + filePath);
         }
     }

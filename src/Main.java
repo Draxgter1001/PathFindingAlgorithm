@@ -16,6 +16,10 @@ public class Main {
             ExceptionHandler.handleMissingStartingPointException();
         } catch (CustomException.MissingFinishPointException e) {
             ExceptionHandler.handleMissingFinishPointException();
+        } catch (CustomException.MultipleStartPointsException e) {
+            ExceptionHandler.handleMultipleStartPointsException();
+        } catch (CustomException.MultipleFinishPointsException e) {
+            ExceptionHandler.handleMultipleFinishPointsException();
         }
     }
 }
