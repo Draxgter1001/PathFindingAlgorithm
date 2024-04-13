@@ -9,18 +9,10 @@ public class Main {
             String path = finder.findPath();
             System.out.println(path);
 
+        } catch (CustomException e) {
+            System.err.println("Error: " + e.getMessage());
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
-        } catch (CustomException.MapLoadingException e) {
-            ExceptionHandler.handleMapLoadingException();
-        } catch (CustomException.MissingStartPointException e) {
-            ExceptionHandler.handleMissingStartingPointException();
-        } catch (CustomException.MissingFinishPointException e) {
-            ExceptionHandler.handleMissingFinishPointException();
-        } catch (CustomException.MultipleStartPointsException e) {
-            ExceptionHandler.handleMultipleStartPointsException();
-        } catch (CustomException.MultipleFinishPointsException e) {
-            ExceptionHandler.handleMultipleFinishPointsException();
         }
     }
 }

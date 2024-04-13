@@ -11,13 +11,13 @@ public class GameMap {
     private int startX = -1, startY = -1; //Starting Position in the Map
     private int finishX = -1, finishY = -1; //Finish Position in the Map
 
-    public GameMap(String filePath) throws IOException, CustomException.MapLoadingException, CustomException.MissingStartPointException, CustomException.MissingFinishPointException, CustomException.MultipleStartPointsException, CustomException.MultipleFinishPointsException {
+    public GameMap(String filePath) throws IOException, CustomException {
         loadMap(filePath);
-        if (startX == -1 || startY == -1) throw new CustomException.MissingStartPointException("Map does not contain a starting point 'S'");
-        if (finishX == -1 || finishY == -1) throw new CustomException.MissingFinishPointException("Map does not contain a finish point 'F'");
+        if (startX == -1 || startY == -1) throw new CustomException("Map does not contain a starting point 'S'");
+        if (finishX == -1 || finishY == -1) throw new CustomException("Map does not contain a finish point 'F'");
     }
 
-    private void loadMap(String filePath) throws IOException, CustomException.MapLoadingException, CustomException.MultipleStartPointsException, CustomException.MultipleFinishPointsException {
+    private void loadMap(String filePath) throws IOException, CustomException {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -27,13 +27,13 @@ public class GameMap {
                 for (int i = 0; i < row.length; i++) {
                     if (row[i] == 'S') {
                         if (startX != -1 || startY != -1) {
-                            throw new CustomException.MultipleStartPointsException("Map contains multiple starting points 'S'");
+                            throw new CustomException("Map contains multiple starting points 'S'");
                         }
                         startX = rowIndex;
                         startY = i;
                     } else if (row[i] == 'F') {
                         if (finishX != -1 || finishY != -1) {
-                            throw new CustomException.MultipleFinishPointsException("Map contains multiple finish points 'F'");
+                            throw new CustomException("Map contains multiple finish points 'F'");
                         }
                         finishX = rowIndex;
                         finishY = i;
@@ -41,7 +41,7 @@ public class GameMap {
                 }
             }
         } catch (FileNotFoundException e) {
-            throw new CustomException.MapLoadingException("Map file not found: " + filePath);
+            throw new CustomException("Map file not found: " + filePath);
         }
     }
 
