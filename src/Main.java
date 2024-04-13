@@ -9,9 +9,7 @@ public class Main {
             String path = finder.findPath();
             System.out.println(path);
 
-        } catch (CustomException e) {
-            System.err.println("Error: " + e.getMessage());
-        } catch (IOException e) {
+        } catch (CustomException | IOException e) {
             System.err.println("Error: " + e.getMessage());
         }
     }
