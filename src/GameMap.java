@@ -49,9 +49,7 @@ public class GameMap {
         return map;
     }
 
-    public int getStartX() {
-        return startX;
-    }
+    public int getStartX() { return startX; }
 
     public int getStartY() {
         return startY;

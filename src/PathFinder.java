@@ -21,6 +21,7 @@ public class PathFinder {
     }
 
     public String findPath() {
+
         int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
         String[] directionNames = {"Right", "Down", "Left", "Up"};
         boolean[][] visited = new boolean[gameMap.getHeight()][gameMap.getWidth()];
