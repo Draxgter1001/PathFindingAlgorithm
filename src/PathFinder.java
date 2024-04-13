@@ -33,7 +33,6 @@ public class PathFinder {
     }
 
     public String findPath() {
-        // Define possible moves: Right, Down, Left, Up
         int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
         String[] directionNames = {"Right", "Down", "Left", "Up"};
         boolean[][] visited = new boolean[GAMEMAP.getHeight()][GAMEMAP.getWidth()];
@@ -59,10 +58,16 @@ public class PathFinder {
             }
 
             for (int i = 0; i < directions.length; i++) {
-                int newX = current.x + directions[i][0];
-                int newY = current.y + directions[i][1];
+                int newX = current.x;
+                int newY = current.y;
 
-                if (isValidMove(newX, newY, visited)) {
+                // Slide in the current direction until hitting a wall or rock
+                while (isValidMove(newX + directions[i][0], newY + directions[i][1], visited)) {
+                    newX += directions[i][0];
+                    newY += directions[i][1];
+                }
+
+                if (!visited[newX][newY]) {
                     visited[newX][newY] = true;
                     String newPath = current.path + "\nMove " + directionNames[i] + " to (" + (newY + 1) + "," + (newX + 1) + ")";
                     queue.add(new PathNode(newX, newY, current.stepCount + 1, newPath, GAMEMAP));
